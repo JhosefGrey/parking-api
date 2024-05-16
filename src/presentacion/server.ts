@@ -1,19 +1,16 @@
 import express from 'express';
 
 interface Options {
-    port: number,
-    secret: string
+    port: number
 }
 
 export class Server {
 
-    private readonly port: number
-    private readonly secret: string
+    private readonly port: number;
 
     constructor(options: Options) {
-        const { port, secret } = options;
+        const { port } = options;
         this.port = port;
-        this.secret = secret;
     }
 
     private app = express();
