@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { Usuario } from "../models/user.model";
 import { handleHttp } from "../utils/error.handle";
+import { insertUsuario } from "../services/usuario";
 
 
 const getAll = async (req: Request, res: Response) => {
@@ -44,28 +45,12 @@ const getById = async (req: Request, res: Response) => {
 const post = async (req: Request, res: Response) => {
     try {
 
-        const { nombre, apellido, email, clave, apartamento } = req.body;
+        const response = await insertUsuario(req.body);
 
-        if (!nombre || !apellido || !email || !clave) {
-            res.status(400).json({ error: "Faltan datos" });
-        }
-
-        const usuario = await Usuario.create({
-            nombre,
-            apellido,
-            email,
-            clave,
-            apartamento
-        });
-
-        if (usuario) {
-            res.sendStatus(200)
-        } else {
-            res.sendStatus(400);
-        }
+        res.send(response)
 
     } catch (error) {
-        handleHttp(res, 'Error al crear el usuario');
+        handleHttp(res, 'Error al crear el usuario', error);
     }
 }
 
