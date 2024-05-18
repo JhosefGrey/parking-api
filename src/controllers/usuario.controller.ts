@@ -46,9 +46,7 @@ const post = async (req: Request, res: Response) => {
     try {
 
         const response = await insertUsuario(req.body);
-
-        res.send(response)
-
+        res.sendStatus(200);
     } catch (error) {
         handleHttp(res, 'Error al crear el usuario', error);
     }

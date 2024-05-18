@@ -3,5 +3,4 @@ export interface UsuarioInterface {
     apellido: string,
     email: string,
     clave: string,
-    apartamento?: string
 }

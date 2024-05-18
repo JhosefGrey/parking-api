@@ -6,7 +6,6 @@ const usuarioSchema = new mongoose.Schema<UsuarioInterface>({
     apellido: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     clave: { type: String, required: true },
-    apartamento: { type: mongoose.Schema.ObjectId },
 }, {
     timestamps: true,
     versionKey: false
