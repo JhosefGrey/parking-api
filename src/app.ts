@@ -1,15 +1,14 @@
-import { envs } from "./config/envs";
-import { MongoDatabase } from "./data/mongo";
-import { Server } from "./presentacion/server";
+import 'dotenv/config';
+import express, { json } from 'express';
+import cors from 'cors';
+import { router } from './routes';
+import db from './config/mongo';
 
-(async () => {
-    main();
-})();
+const PORT = process.env.PORT || 3000;
+const app = express();
 
-async function main() {
-
-    await MongoDatabase.connect({ mongoUrl: envs.MONGO_URL, dbName: envs.MONGO_DB_NAME })
-
-    const server = new Server({ port : envs.PORT || 3000});
-    server.start();
-}
+app.use(cors());
+app.use(express.json());
+app.use(router);
+db().then(() => console.log("Conexión en mongo"));
+app.listen(PORT, () => console.log(`Servidor en el puerto ${PORT}`))
