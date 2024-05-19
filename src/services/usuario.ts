@@ -3,12 +3,12 @@ import { UpdatePwd, UpdateUsuario, UsuarioInterface } from "../interfaces/usuari
 import { encrypt, verified } from "../utils/password.handle";
 
 const getAllUsuarios = async () => {
-    const usuarios = await Usuario.find();
+    const usuarios = await Usuario.find().select('-clave');
     return usuarios;
 };
 
-const getById = async (id: string) => {
-    const usuario = await Usuario.findOne({ _id: id })
+const getUsuarioById = async (id: string) => {
+    const usuario = await Usuario.findOne({ _id: id }).select('-clave')
     return usuario;
 }
 
@@ -35,9 +35,8 @@ const updateUsuario = async (usuario: UpdateUsuario) => {
     if (validarEmail && (existe.email !== usuario.email))
         throw "Correo ya utilizado";
 
-    const usuarioUpdate = await Usuario.updateOne({ _id: usuario.idUsuario }, { nombre: usuario.nombre, apellido: usuario.apellido, email: usuario.email })
+    await Usuario.updateOne({ _id: usuario.idUsuario }, { nombre: usuario.nombre, apellido: usuario.apellido, email: usuario.email })
 
-    return usuarioUpdate;
 }
 
 const updatePwdAdmin = async (usuario: UpdatePwd) => {
@@ -47,8 +46,7 @@ const updatePwdAdmin = async (usuario: UpdatePwd) => {
         throw "El usuario no existe";
 
     const pwdHash = await encrypt(usuario.nuevaClave);
-    const updated = await Usuario.findOneAndUpdate({ _id: usuario.idUsuario }, { clave: pwdHash });
-    return updated;
+    await Usuario.findOneAndUpdate({ _id: usuario.idUsuario }, { clave: pwdHash });
 }
 
 const updatePwd = async (usuario: UpdatePwd) => {
@@ -63,8 +61,7 @@ const updatePwd = async (usuario: UpdatePwd) => {
         throw "La clave anterior no coincide";
 
     const pwdHash = await encrypt(usuario.nuevaClave);
-    const updated = await Usuario.findOneAndUpdate({ _id: usuario.idUsuario }, { clave: pwdHash });
-    return updated;
+    await Usuario.findOneAndUpdate({ _id: usuario.idUsuario }, { clave: pwdHash });
 }
 
-export { getAllUsuarios, getById, updateUsuario, updatePwdAdmin, updatePwd, changeStateUsuario };
+export { getAllUsuarios, getUsuarioById, updateUsuario, updatePwdAdmin, updatePwd, changeStateUsuario };

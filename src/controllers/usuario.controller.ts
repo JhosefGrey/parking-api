@@ -1,20 +1,18 @@
 import { Request, Response } from "express"
-import { Usuario } from "../models/user.model";
 import { handleHttp } from "../utils/error.handle";
-import { insertUsuario } from "../services/usuario";
-
+import { changeStateUsuario, getAllUsuarios, getUsuarioById, updatePwd, updateUsuario, updatePwdAdmin } from "../services/usuario";
 
 const getAll = async (req: Request, res: Response) => {
     try {
 
-        const usuarios = await Usuario.find().select('-clave');
+        const usuarios = await getAllUsuarios();
 
         res.status(200);
         res.send(usuarios)
 
 
     } catch (error) {
-        handleHttp(res, 'Error al obtener los usuarios');
+        handleHttp(res, `${error}`);
     }
 }
 
@@ -26,30 +24,81 @@ const getById = async (req: Request, res: Response) => {
         if (!idUsuario)
             throw "Sin Id";
 
-        const usuario = await Usuario.findById(idUsuario).select('-clave');
-
-        if (!usuario)
-            throw "Usuario no encontrado";
-
-
+        const usuario = await getUsuarioById(idUsuario);
 
         res.status(200);
         res.send(usuario)
 
 
     } catch (error) {
-        handleHttp(res, 'Error al obtener el usuario');
+        handleHttp(res, `${error}`);
     }
 }
 
-const post = async (req: Request, res: Response) => {
+const updateUser = async (req: Request, res: Response) => {
     try {
 
-        const response = await insertUsuario(req.body);
-        res.sendStatus(200);
+        const { idUsuario, nombre, apellido, email } = req.body;
+
+        if (!idUsuario)
+            throw "Sin Id";
+
+        await updateUsuario({ idUsuario, nombre, apellido, email });
+        res.status(200);
+
     } catch (error) {
-        handleHttp(res, 'Error al crear el usuario', error);
+        handleHttp(res, `${error}`);
     }
 }
 
-export { getAll, getById, post, }
+const updatedPwdAdmmin = async (req: Request, res: Response) => {
+    try {
+
+        const { idUsuario, nuevaClave } = req.body;
+
+        if (!idUsuario)
+            throw "Sin Id";
+
+        await updatePwdAdmin({ idUsuario, nuevaClave });
+        res.status(200);
+
+    } catch (error) {
+        handleHttp(res, `${error}`);
+    }
+}
+
+const updatedPwd = async (req: Request, res: Response) => {
+    try {
+
+        const { idUsuario, clave, nuevaClave } = req.body;
+
+        if (!idUsuario)
+            throw "Sin Id";
+
+        await updatePwd({ idUsuario, clave, nuevaClave });
+        res.status(200);
+
+    } catch (error) {
+        handleHttp(res, `${error}`);
+    }
+}
+
+
+const changeStateUser = async (req: Request, res: Response) => {
+    try {
+
+        const idUsuario = req.params.id;
+
+        if (!idUsuario)
+            throw "Sin Id";
+
+        await changeStateUsuario(idUsuario);
+        res.status(200);
+
+    } catch (error) {
+        handleHttp(res, `${error}`);
+    }
+}
+
+
+export { getAll, getById, updatedPwdAdmmin, changeStateUser, updateUser, updatedPwd }
