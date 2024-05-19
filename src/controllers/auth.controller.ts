@@ -4,8 +4,8 @@ import { handleHttp } from "../utils/error.handle";
 
 const registerCtrl = async (req: Request, res: Response) => {
     try {
-        const { nombre, apellido, email, clave } = req.body;
-        await registrarNewUser({ nombre, apellido, email, clave });
+        const { nombre, apellido, email, clave, rol } = req.body;
+        await registrarNewUser({ nombre, apellido, email, clave, rol });
         return res.sendStatus(200);
     } catch (error) {
         handleHttp(res, `${error}`)
@@ -15,8 +15,11 @@ const registerCtrl = async (req: Request, res: Response) => {
 const loginCtrl = async (req: Request, res: Response) => {
     try {
         const { email, clave } = req.body;
-        await login({ email, clave });
-        return res.sendStatus(200);
+        const jwt = await login({ email, clave });
+        res.status(200);
+        return res.json({
+            token: jwt
+        })
     } catch (error) {
         handleHttp(res, `${error}`)
     }

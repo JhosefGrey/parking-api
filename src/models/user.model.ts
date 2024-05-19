@@ -6,6 +6,7 @@ const usuarioSchema = new mongoose.Schema<UsuarioInterface>({
     apellido: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     clave: { type: String, required: true },
+    rol: { type: String, enum: ['admin', 'seg', 'user'], default: 'user' }
 }, {
     timestamps: true,
     versionKey: false

@@ -3,6 +3,7 @@ import { AuthInterface } from "../interfaces/auth.interface";
 import { UsuarioInterface } from "../interfaces/usuario.interface";
 import { Usuario } from "../models/user.model";
 import { encrypt } from "../utils/password.handle";
+import { generateToken } from "../utils/jwt.handle";
 
 const registrarNewUser = async (usuario: UsuarioInterface) => {
     const checkIs = await Usuario.findOne({ email: usuario.email });
@@ -24,7 +25,14 @@ const login = async (usuario: AuthInterface) => {
 
     if(!isCorrect) throw "Clave incorrecta";
 
-    return checkIs;
+    const token = generateToken({
+        apellido: checkIs.apellido, 
+        email: checkIs.email,
+        nombre: checkIs.nombre,
+        rol: checkIs.rol
+    })
+
+    return token;
 }
 
 export { registrarNewUser, login }
