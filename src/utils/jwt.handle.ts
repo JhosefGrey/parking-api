@@ -7,8 +7,9 @@ const generateToken = (payload: IUsuario) => {
     return jwt;
 }
 
-const verifyToken = (token: any ) => {
-
+const verifyToken = (token: string) => {
+    const isOk = verify(token, JWT_SECRET);
+    return isOk;
 }
 
 export { generateToken, verifyToken };

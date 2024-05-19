@@ -1,11 +1,21 @@
 import { Request, Response } from "express";
-import { login, registrarNewUser } from "../services/auth";
+import { login, registrarNewAdminUser, registrarNewUser } from "../services/auth";
 import { handleHttp } from "../utils/error.handle";
 
 const registerCtrl = async (req: Request, res: Response) => {
     try {
+        const { nombre, apellido, email, clave } = req.body;
+        await registrarNewUser({ nombre, apellido, email, clave, rol: 'user' });
+        return res.sendStatus(200);
+    } catch (error) {
+        handleHttp(res, `${error}`)
+    }
+}
+
+const registerAdminCtrl = async (req: Request, res: Response) => {
+    try {
         const { nombre, apellido, email, clave, rol } = req.body;
-        await registrarNewUser({ nombre, apellido, email, clave, rol });
+        await registrarNewAdminUser({ nombre, apellido, email, clave, rol });
         return res.sendStatus(200);
     } catch (error) {
         handleHttp(res, `${error}`)
@@ -25,4 +35,4 @@ const loginCtrl = async (req: Request, res: Response) => {
     }
 }
 
-export { registerCtrl, loginCtrl };
+export { registerCtrl, registerAdminCtrl, loginCtrl };

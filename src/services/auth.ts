@@ -12,6 +12,18 @@ const registrarNewUser = async (usuario: UsuarioInterface) => {
 
     const passHash = await encrypt(usuario.clave);
     usuario.clave = passHash;
+    usuario.rol = 'user';
+    const responseInsert = await Usuario.create(usuario);
+    return responseInsert;
+}
+
+const registrarNewAdminUser = async (usuario: UsuarioInterface) => {
+    const checkIs = await Usuario.findOne({ email: usuario.email });
+
+    if (checkIs) throw "Usuario ya registrado"
+
+    const passHash = await encrypt(usuario.clave);
+    usuario.clave = passHash;
     const responseInsert = await Usuario.create(usuario);
     return responseInsert;
 }
@@ -35,4 +47,4 @@ const login = async (usuario: AuthInterface) => {
     return token;
 }
 
-export { registrarNewUser, login }
+export { registrarNewUser, registrarNewAdminUser, login }
