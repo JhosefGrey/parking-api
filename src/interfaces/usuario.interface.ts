@@ -4,7 +4,8 @@ export interface UsuarioInterface {
     email: string,
     clave: string,
     rol: "admin" | "seg" | "user"
-    activo: boolean
+    activo: boolean,
+    casaId: any
 }
 
 export interface IUsuario {

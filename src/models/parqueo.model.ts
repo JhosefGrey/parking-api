@@ -1,10 +1,13 @@
-import mongoose, { model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
+import { ParqueoInterface } from "../interfaces/parqueo.interface";
 
-const parqueoSchema = new mongoose.Schema({
-    nombre: { type: String, required: true },
-    codigo: { type: String, required: true, unique: true },
-    fechaCreacion: { type: Date, default: Date.now },
-    creadoPor: { type: mongoose.Schema.ObjectId, required: true }
+const parqueoSchema = new mongoose.Schema<ParqueoInterface>({
+    codigo: { type: String, required: true },
+    ocupado: { type : Boolean, default: false },
+    bloqueId: { type: Schema.ObjectId, required: true }
+}, {
+    timestamps: true,
+    versionKey: false
 });
 
 export const Parqueo = model('Parqueo', parqueoSchema);

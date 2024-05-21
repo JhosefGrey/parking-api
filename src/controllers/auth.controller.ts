@@ -4,8 +4,8 @@ import { handleHttp } from "../utils/error.handle";
 
 const registerCtrl = async (req: Request, res: Response) => {
     try {
-        const { nombre, apellido, email, clave } = req.body;
-        await registrarNewUser({ nombre, apellido, email, clave, rol: 'user', activo: true });
+        const { nombre, apellido, email, clave, casaId } = req.body;
+        await registrarNewUser({ nombre, apellido, email, clave, rol: 'user', activo: true, casaId });
         return res.sendStatus(200);
     } catch (error) {
         handleHttp(res, `${error}`)
@@ -14,8 +14,8 @@ const registerCtrl = async (req: Request, res: Response) => {
 
 const registerAdminCtrl = async (req: Request, res: Response) => {
     try {
-        const { nombre, apellido, email, clave, rol } = req.body;
-        await registrarNewAdminUser({ nombre, apellido, email, clave, rol, activo: true });
+        const { nombre, apellido, email, clave, rol, casaId } = req.body;
+        await registrarNewAdminUser({ nombre, apellido, email, clave, rol, activo: true, casaId });
         return res.sendStatus(200);
     } catch (error) {
         handleHttp(res, `${error}`)
