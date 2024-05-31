@@ -1,15 +1,9 @@
-import mongoose, { Schema, model } from "mongoose";
-import { UsuarioInterface } from "../interfaces/usuario.interface";
+import mongoose, { model } from "mongoose";
+import { IUsuario } from "../interfaces/usuario.interface";
 
-const usuarioSchema = new mongoose.Schema<UsuarioInterface>({
-    nombre: { type: String, required: true },
-    apellido: { type: String, required: true },
+const usuarioSchema = new mongoose.Schema<IUsuario>({
     email: { type: String, required: true, unique: true },
     clave: { type: String, required: true },
-    rol: { type: String, enum: ['admin', 'seg', 'user'], default: 'user' },
-    activo: { type: Boolean, default: true },
-    casaId: { type: Schema.ObjectId, default: null }
-
 }, {
     timestamps: true,
     versionKey: false

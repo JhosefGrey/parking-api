@@ -1,5 +1,5 @@
 import { Usuario } from "../models/user.model";
-import { UpdatePwd, UpdateUsuario, UsuarioInterface } from "../interfaces/usuario.interface";
+import { UpdatePwd, UpdateUsuario } from "../interfaces/usuario.interface";
 import { encrypt, verified } from "../utils/password.handle";
 
 const getAllUsuarios = async () => {
@@ -10,17 +10,6 @@ const getAllUsuarios = async () => {
 const getUsuarioById = async (id: string) => {
     const usuario = await Usuario.findOne({ _id: id }).select('-clave')
     return usuario;
-}
-
-const changeStateUsuario = async (idUsuario: string) => {
-    const existe = await Usuario.findOne({ _id: idUsuario });
-
-    if (!existe)
-        throw "El usuario no existe";
-
-    const updated = await Usuario.findOneAndUpdate({ _id: idUsuario }, { activo: !existe.activo });
-
-    return updated;
 }
 
 const updateUsuario = async (usuario: UpdateUsuario) => {
@@ -64,4 +53,4 @@ const updatePwd = async (usuario: UpdatePwd) => {
     await Usuario.findOneAndUpdate({ _id: usuario.idUsuario }, { clave: pwdHash });
 }
 
-export { getAllUsuarios, getUsuarioById, updateUsuario, updatePwdAdmin, updatePwd, changeStateUsuario };
+export { getAllUsuarios, getUsuarioById, updateUsuario, updatePwdAdmin, updatePwd };

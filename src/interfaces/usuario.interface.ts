@@ -1,18 +1,6 @@
-export interface UsuarioInterface {
-    nombre: string,
-    apellido: string,
-    email: string,
-    clave: string,
-    rol: "admin" | "seg" | "user"
-    activo: boolean,
-    casaId: any
-}
-
 export interface IUsuario {
-    nombre: string,
-    apellido: string,
     email: string,
-    rol: "admin" | "seg" | "user"
+    clave: string
 }
 
 export interface UpdateUsuario {
