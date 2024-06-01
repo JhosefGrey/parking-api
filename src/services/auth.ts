@@ -4,6 +4,9 @@ import { Usuario } from "../models/user.model";
 import { encrypt } from "../utils/password.handle";
 import { generateToken } from "../utils/jwt.handle";
 import { IUsuario } from "../interfaces/usuario.interface";
+import { Administrador } from "../models/administrador.model";
+import { Agente } from "../models/agente.model";
+import { Inquilino } from "../models/inquilino.models";
 
 const registrarNewUser = async (usuario: IUsuario) => {
     const checkIs = await Usuario.findOne({ email: usuario.email });
@@ -17,18 +20,34 @@ const registrarNewUser = async (usuario: IUsuario) => {
     return responseInsert;
 }
 
-const login = async (usuario: AuthInterface) => {
+const login = async (usuario: AuthInterface, tipo: 'admin' | 'agent' | 'user') => {
     const checkIs = await Usuario.findOne({ email: usuario.email });
     if (!checkIs) throw "Usuario no encontrado";
 
     const pwdHash = checkIs.clave;
     const isCorrect = await compare(usuario.clave, pwdHash);
 
-    if(!isCorrect) throw "Clave incorrecta";
+    if (!isCorrect) throw "Clave incorrecta";
 
-    const token = generateToken({user: checkIs.email})
+    let userData: any = null;
 
-    return token;
+    switch (tipo) {
+        case 'admin':
+            userData = await Administrador.findOne({ idUsuario: checkIs.id })
+            break;
+        case 'agent':
+            userData = await Agente.findOne({ idUsuario: checkIs.id })
+            break;
+        case 'user':
+            userData = await Inquilino.findOne({ idUsuario: checkIs.id })
+            break;
+    }
+
+    if (userData === null) throw "Usuario registrado pero no asignado";
+
+    const token = generateToken({ user: checkIs.email })
+
+    return { token, userData };
 }
 
 export { registrarNewUser, login }

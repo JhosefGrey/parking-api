@@ -1,4 +1,4 @@
-import { UpdateAdministrador } from "../interfaces/administrador.interface";
+import { IAdministrador, UpdateAdministrador } from "../interfaces/administrador.interface";
 import { Administrador } from "../models/administrador.model";
 
 const getAll = async () => {
@@ -9,6 +9,16 @@ const getAll = async () => {
 const getById = async (id: string) => {
     const obj = await Administrador.findById(id);
     return obj;
+}
+
+const create = async (obj: IAdministrador) => {
+
+    await Administrador.create({
+        apellido: obj.apellido,
+        idUsuario: obj.idUsuario,
+        nombre: obj.nombre
+    })
+
 }
 
 const update = async (obj: UpdateAdministrador) => {
@@ -30,4 +40,4 @@ const deleteAdministrador = async (id: string) => {
     await Administrador.deleteOne({ _id: id })
 }
 
-export { getAll, getById, update, deleteAdministrador }
+export { getAll, getById, update, deleteAdministrador, create }

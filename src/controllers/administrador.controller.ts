@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { handleHttp } from "../utils/error.handle";
-import { deleteAdministrador, getAll, getById, update,  } from '../services/administrador'
+import { create, deleteAdministrador, getAll, getById, update,  } from '../services/administrador'
 
 const getAllAdministradores = async (req: Request, res: Response) => {
     try {
@@ -44,7 +44,20 @@ const updateAdministrador = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await update({ idAdministrador, nombre, apellido, idUsuario });
-        res.status(200);
+        res.sendStatus(200);
+
+    } catch (error) {
+        handleHttp(res, `${error}`);
+    }
+}
+
+const createAdministrador = async (req: Request, res: Response) => {
+    try {
+
+        const { nombre, apellido, idUsuario } = req.body;
+
+        await create({ nombre, apellido, idUsuario });
+        res.sendStatus(200);
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -60,11 +73,11 @@ const deleteAdministradorCtrl = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await deleteAdministrador(idAdministrador);
-        res.status(200);
+        res.sendStatus(200);
 
     } catch (error) {
         handleHttp(res, `${error}`);
     }
 }
 
-export { getAllAdministradores, getByIdAdministrador, updateAdministrador, deleteAdministradorCtrl }
+export { getAllAdministradores, getByIdAdministrador, updateAdministrador, deleteAdministradorCtrl, createAdministrador }

@@ -13,7 +13,7 @@ const getById = async (id: string) => {
 
 const createAgente = async (obj: IAgente) => {
    
-   const agente = await Agente.create({
+    await Agente.create({
         apellido: obj.apellido,
         idUsuario: obj.idUsuario,
         nombre: obj.nombre

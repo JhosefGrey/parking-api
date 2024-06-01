@@ -3,3 +3,10 @@ export interface CasaInterface {
     codigo: string,
     bloqueId: any
 }
+
+export interface CasaUpdate {
+    idCasa: string,
+    direccion: string,
+    codigo: string,
+    bloqueId: string
+}

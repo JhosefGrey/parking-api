@@ -14,12 +14,32 @@ const registerCtrl = async (req: Request, res: Response) => {
 
 const loginCtrl = async (req: Request, res: Response) => {
     try {
-        const { email, clave } = req.body;
-        const jwt = await login({ email, clave });
+        const { email, clave, tipo } = req.body;
+
+        let tipoEnum: 'admin' | 'agent' | 'user';
+
+        switch (tipo) {
+            case 1:
+                tipoEnum = 'admin'
+                break;
+            case 2:
+                tipoEnum = 'agent'
+                break;
+            case 3:
+                tipoEnum = 'user'
+                break;
+
+            default:
+                tipoEnum = 'user'
+                break;
+        }
+
+        const jwt = await login({ email, clave }, tipoEnum);
+        
         res.status(200);
         return res.json({
-            token: jwt,
-            user: email
+            token: jwt.token,
+            user: jwt.userData
         })
     } catch (error) {
         handleHttp(res, `${error}`)
