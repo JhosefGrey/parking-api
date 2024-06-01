@@ -1,64 +1,116 @@
 import { Request, Response } from "express"
-import { Parqueo } from "../models/parqueo.model"
+import { handleHttp } from "../utils/error.handle";
+import { create, deleteParqueo, getAll, getAllByBloque, getById, update, updateEstado, } from '../services/parqueo'
 
-
-export const getAll = async (req: Request, res: Response) => {
+const getAllParqueoes = async (req: Request, res: Response) => {
     try {
 
-        const parqueos = await Parqueo.find();
+        const listado = await getAll();
 
-        res.json(parqueos)
+        res.status(200);
+        res.send(listado)
+
 
     } catch (error) {
-
+        handleHttp(res, `${error}`);
     }
 }
 
-export const getById = async (req: Request, res: Response) => {
+
+const getAllParqueosByIdBloqueCtrl = async (req: Request, res: Response) => {
     try {
 
-        const { idParqueo } = req.body;
+        const idBloque = req.params.id;
 
-        if (!idParqueo) {
-            res.sendStatus(400);
-        }
+        const listado = await getAllByBloque(idBloque);
 
-        const parqueo = await Parqueo.findById(idParqueo);
+        res.status(200);
+        res.send(listado)
 
-
-        if (parqueo) {
-            res.json(parqueo)
-        } else {
-            res.sendStatus(404);
-        }
 
     } catch (error) {
-
+        handleHttp(res, `${error}`);
     }
 }
 
-export const create = async (req: Request, res: Response) => {
+const getByIdParqueo = async (req: Request, res: Response) => {
     try {
 
-        const { codigo } = req.body;
+        const idParqueo = req.params.id;
 
-        if (!codigo) {
-            res.status(400).json({ error: "Faltan datos" });
-        }
+        if (!idParqueo)
+            throw "Sin Id";
 
-        const parqueo = await Parqueo.create({
-            codigo,
-            creadoPor: 'jh'
-        });
+        const obj = await getById(idParqueo);
 
+        res.status(200);
+        res.send(obj)
 
-        if (parqueo) {
-            res.json(parqueo)
-        } else {
-            res.sendStatus(404);
-        }
 
     } catch (error) {
-
+        handleHttp(res, `${error}`);
     }
 }
+
+const updateParqueo = async (req: Request, res: Response) => {
+    try {
+
+        const { idParqueo, codigo, bloqueId, ocupado } = req.body;
+
+        if (!idParqueo)
+            throw "Sin Id";
+
+        await update({ idParqueo, codigo, bloqueId, ocupado });
+        res.sendStatus(200);
+
+    } catch (error) {
+        handleHttp(res, `${error}`);
+    }
+}
+
+const updateEstadoCtrl = async (req: Request, res: Response) => {
+    try {
+
+        const idParqueo = req.params.id;
+
+        if (!idParqueo)
+            throw "Sin Id";
+
+        await updateEstado(idParqueo);
+
+        res.sendStatus(200);
+    } catch (error) {
+        handleHttp(res, `${error}`);
+    }
+}
+
+const createParqueo = async (req: Request, res: Response) => {
+    try {
+
+        const { codigo, bloqueId } = req.body;
+
+        await create({ codigo, bloqueId, ocupado: false });
+        res.sendStatus(200);
+
+    } catch (error) {
+        handleHttp(res, `${error}`);
+    }
+}
+
+const deleteParqueoCtrl = async (req: Request, res: Response) => {
+    try {
+
+        const idParqueo = req.params.id;
+
+        if (!idParqueo)
+            throw "Sin Id";
+
+        await deleteParqueo(idParqueo);
+        res.sendStatus(200);
+
+    } catch (error) {
+        handleHttp(res, `${error}`);
+    }
+}
+
+export { getAllParqueoes, getByIdParqueo, updateParqueo, deleteParqueoCtrl, createParqueo, updateEstadoCtrl, getAllParqueosByIdBloqueCtrl }

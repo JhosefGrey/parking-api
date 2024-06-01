@@ -6,6 +6,16 @@ const getAll = async () => {
     return listado;
 };
 
+const getAllByAgente = async (idAgente: string) => {
+    const listado = await Solicitud.find({ agenteAsignado: idAgente });
+    return listado;
+};
+
+const getAllByUsuario = async (idUsuario: string) => {
+    const listado = await Solicitud.find({ usuarioSolicitud: idUsuario });
+    return listado;
+};
+
 const getById = async (id: string) => {
     const obj = await Solicitud.findById(id);
     return obj;
@@ -47,4 +57,4 @@ const deleteSolicitud = async (id: string) => {
     await Solicitud.deleteOne({ _id: id })
 }
 
-export { getAll, getById, update, deleteSolicitud, create }
+export { getAll, getById, update, deleteSolicitud, create, getAllByAgente, getAllByUsuario }
