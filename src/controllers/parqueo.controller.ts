@@ -61,7 +61,7 @@ const updateParqueo = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await update({ idParqueo, codigo, bloqueId, ocupado });
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -78,7 +78,7 @@ const updateEstadoCtrl = async (req: Request, res: Response) => {
 
         await updateEstado(idParqueo);
 
-        res.sendStatus(200);
+        res.status(200).send();
     } catch (error) {
         handleHttp(res, `${error}`);
     }
@@ -90,7 +90,7 @@ const createParqueo = async (req: Request, res: Response) => {
         const { codigo, bloqueId } = req.body;
 
         await create({ codigo, bloqueId, ocupado: false });
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -106,7 +106,7 @@ const deleteParqueoCtrl = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await deleteParqueo(idParqueo);
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);

@@ -83,7 +83,7 @@ const updateSolicitud = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await update({ agenteAsignado, completada, fechaAsignado, fechaSolicitud, idSolicitud, parqueoSolicitado, usuarioSolicitud });
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -96,7 +96,7 @@ const createSolicitud = async (req: Request, res: Response) => {
         const { agenteAsignado, completada, fechaAsignado, fechaSolicitud, parqueoSolicitado, usuarioSolicitud } = req.body;
 
         await create({ agenteAsignado, completada, fechaAsignado, fechaSolicitud, parqueoSolicitado, usuarioSolicitud });
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -112,7 +112,7 @@ const deleteSolicitudCtrl = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await deleteSolicitud(idSolicitud);
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);

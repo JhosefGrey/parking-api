@@ -15,9 +15,9 @@ const getById = async (id: string) => {
 
 const createAgente = async (obj: IAgente) => {
    
-    const entityValidateAdmin = await Administrador.find({ idUsuario: obj.idUsuario })
-    const entityValidateAgente = await Agente.find({ idUsuario: obj.idUsuario })
-    const entityValidateInquilino = await Inquilino.find({ idUsuario: obj.idUsuario })
+    const entityValidateAdmin = await Administrador.findOne({ idUsuario: obj.idUsuario })
+    const entityValidateAgente = await Agente.findOne({ idUsuario: obj.idUsuario })
+    const entityValidateInquilino = await Inquilino.findOne({ idUsuario: obj.idUsuario })
 
     if(entityValidateAgente || entityValidateAdmin || entityValidateInquilino) throw "Usuario ya ingresado";
 

@@ -41,7 +41,7 @@ const createInquilinoCtrl = async (req: Request, res: Response) => {
         const { nombre, apellido, idUsuario, idCasa } = req.body;
 
         await createInquilino({ apellido, idCasa, idUsuario, nombre });
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -57,7 +57,7 @@ const updateInquilino = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await update({ idInquilino, nombre, apellido, idUsuario, idCasa });
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -73,7 +73,7 @@ const deleteInquilinoCtrl = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await deleteInquilino(idInquilino);
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);

@@ -41,7 +41,7 @@ const createAgenteCtrl = async (req: Request, res: Response) => {
         const { nombre, apellido, idUsuario } = req.body;
 
          await createAgente({  nombre, apellido, idUsuario });
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -57,7 +57,7 @@ const updateAgente = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await update({ idAgente, nombre, apellido, idUsuario });
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -73,7 +73,7 @@ const deleteAgenteCtrl = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await deleteAgente(idAgente);
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);

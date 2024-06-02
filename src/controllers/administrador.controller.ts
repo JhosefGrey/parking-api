@@ -44,7 +44,7 @@ const updateAdministrador = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await update({ idAdministrador, nombre, apellido, idUsuario });
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -57,7 +57,7 @@ const createAdministrador = async (req: Request, res: Response) => {
         const { nombre, apellido, idUsuario } = req.body;
 
         await create({ nombre, apellido, idUsuario });
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -73,7 +73,7 @@ const deleteAdministradorCtrl = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await deleteAdministrador(idAdministrador);
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);

@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { handleHttp } from "../utils/error.handle";
-import { getAllUsuarios, getUsuarioById, updatePwd, updatePwdAdmin } from "../services/usuario";
+import { deleteUsuario, getAllUsuarios, getUsuarioById, updatePwd, updatePwdAdmin } from "../services/usuario";
 
 const getAll = async (req: Request, res: Response) => {
     try {
@@ -35,6 +35,25 @@ const getById = async (req: Request, res: Response) => {
     }
 }
 
+const deleteUsuarioCtrl = async (req: Request, res: Response) => {
+    try {
+
+        const idUsuario = req.params.id;
+
+        if (!idUsuario)
+            throw "Sin Id";
+
+        await deleteUsuario(idUsuario);
+
+        res.status(200);
+        res.send()
+
+
+    } catch (error) {
+        handleHttp(res, `${error}`);
+    }
+}
+
 const updatedPwdAdmmin = async (req: Request, res: Response) => {
     try {
 
@@ -44,7 +63,7 @@ const updatedPwdAdmmin = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await updatePwdAdmin({ idUsuario, nuevaClave });
-        res.status(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -67,4 +86,4 @@ const updatedPwd = async (req: Request, res: Response) => {
     }
 }
 
-export { getAll, getById, updatedPwdAdmmin, updatedPwd }
+export { getAll, getById, updatedPwdAdmmin, updatedPwd, deleteUsuarioCtrl }

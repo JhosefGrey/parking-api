@@ -6,7 +6,7 @@ const registerCtrl = async (req: Request, res: Response) => {
     try {
         const { email, clave } = req.body;
         await registrarNewUser({ email, clave });
-        return res.sendStatus(200);
+        return res.status(200).send();
     } catch (error) {
         handleHttp(res, `${error}`)
     }

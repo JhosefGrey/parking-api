@@ -44,7 +44,7 @@ const updateCasa = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await update({ bloqueId, idCasa, codigo, direccion });
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -57,7 +57,7 @@ const createCasa = async (req: Request, res: Response) => {
         const { codigo, bloqueId, direccion } = req.body;
 
         await create({ codigo, bloqueId, direccion });
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -73,7 +73,7 @@ const deleteCasaCtrl = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await deleteCasa(idCasa);
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);

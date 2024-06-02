@@ -44,7 +44,7 @@ const updateBloque = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await update({ idBloque, codigo });
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -57,7 +57,7 @@ const createBloque = async (req: Request, res: Response) => {
         const { codigo } = req.body;
 
         await create({ codigo });
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);
@@ -73,7 +73,7 @@ const deleteBloqueCtrl = async (req: Request, res: Response) => {
             throw "Sin Id";
 
         await deleteBloque(idBloque);
-        res.sendStatus(200);
+        res.status(200).send();
 
     } catch (error) {
         handleHttp(res, `${error}`);

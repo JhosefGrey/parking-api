@@ -1,6 +1,9 @@
 import { Usuario } from "../models/user.model";
 import { UpdatePwd, UpdateUsuario } from "../interfaces/usuario.interface";
 import { encrypt, verified } from "../utils/password.handle";
+import { Administrador } from "../models/administrador.model";
+import { Agente } from "../models/agente.model";
+import { Inquilino } from "../models/inquilino.models";
 
 const getAllUsuarios = async () => {
     const usuarios = await Usuario.find().select('-clave');
@@ -53,4 +56,15 @@ const updatePwd = async (usuario: UpdatePwd) => {
     await Usuario.findOneAndUpdate({ _id: usuario.idUsuario }, { clave: pwdHash });
 }
 
-export { getAllUsuarios, getUsuarioById, updateUsuario, updatePwdAdmin, updatePwd };
+const deleteUsuario = async (id: string) => {
+    const entityValidateAdmin = await Administrador.findOne({ idUsuario: id })
+    const entityValidateAgente = await Agente.findOne({ idUsuario:id })
+    const entityValidateInquilino = await Inquilino.findOne({ idUsuario: id })
+
+    if (entityValidateAgente || entityValidateAdmin || entityValidateInquilino) throw "No se puede eliminar un usuario que ya esta asignado";
+
+    await Usuario.findOneAndDelete({ _id: id }).select('-clave')
+}
+
+
+export { getAllUsuarios, getUsuarioById, updateUsuario, updatePwdAdmin, updatePwd, deleteUsuario };
