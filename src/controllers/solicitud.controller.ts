@@ -77,12 +77,12 @@ const getByUsuario = async (req: Request, res: Response) => {
 const updateSolicitud = async (req: Request, res: Response) => {
     try {
 
-        const { agenteAsignado, completada, fechaAsignado, fechaSolicitud, idSolicitud, parqueoSolicitado, usuarioSolicitud } = req.body;
+        const { agenteAsignado, idSolicitud,  } = req.body;
 
         if (!idSolicitud)
             throw "Sin Id";
 
-        await update({ agenteAsignado, completada, fechaAsignado, fechaSolicitud, idSolicitud, parqueoSolicitado, usuarioSolicitud });
+        await update({ agenteAsignado, idSolicitud });
         res.status(200).send();
 
     } catch (error) {
@@ -93,9 +93,9 @@ const updateSolicitud = async (req: Request, res: Response) => {
 const createSolicitud = async (req: Request, res: Response) => {
     try {
 
-        const { agenteAsignado, completada, fechaAsignado, fechaSolicitud, parqueoSolicitado, usuarioSolicitud } = req.body;
+        const { parqueoSolicitado, usuarioSolicitud } = req.body;
 
-        await create({ agenteAsignado, completada, fechaAsignado, fechaSolicitud, parqueoSolicitado, usuarioSolicitud });
+        await create({ parqueoSolicitado, usuarioSolicitud });
         res.status(200).send();
 
     } catch (error) {

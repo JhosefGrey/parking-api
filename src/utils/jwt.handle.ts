@@ -3,7 +3,7 @@ import { IUsuario } from '../interfaces/usuario.interface';
 const JWT_SECRET = process.env.SECRET || "";
 
 const generateToken = (payload: { user: string }) => {
-    const jwt = sign(payload, JWT_SECRET, { expiresIn: '2h' });
+    const jwt = sign(payload, JWT_SECRET, { expiresIn: '10h' });
     return jwt;
 }
 

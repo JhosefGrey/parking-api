@@ -1,4 +1,5 @@
-import { SolicitudInterface, SolicitudUpdate } from "../interfaces/solicitud.interface";
+import { SolicitudCreate, SolicitudInterface, SolicitudUpdate } from "../interfaces/solicitud.interface";
+import { Parqueo } from "../models/parqueo.model";
 import { Solicitud } from "../models/solicitud.model";
 
 const getAll = async () => {
@@ -7,7 +8,32 @@ const getAll = async () => {
 };
 
 const getAllByAgente = async (idAgente: string) => {
-    const listado = await Solicitud.find({ agenteAsignado: idAgente });
+    // const listado = await Solicitud.find({ agenteAsignado: idAgente });
+
+    const listado = await Solicitud.aggregate([
+        {
+            $lookup: {
+                from: "inquilinos",
+                localField: 'usuarioSolicitud',
+                foreignField: "_id",
+                as: "inquilino",
+            }
+        },
+        {
+            $unwind: "$inquilino"
+        },
+        {
+            $lookup: {
+                from: "parqueos",
+                localField: 'parqueoSolicitado',
+                foreignField: "_id",
+                as: "parqueo",
+            }
+        },
+        {
+            $unwind: "$parqueo"
+        },
+    ])
     return listado;
 };
 
@@ -21,12 +47,8 @@ const getById = async (id: string) => {
     return obj;
 }
 
-const create = async (obj: SolicitudInterface) => {
+const create = async (obj: SolicitudCreate) => {
     await Solicitud.create({
-        agenteAsignado: obj.agenteAsignado,
-        completada: obj.completada,
-        fechaAsignado: obj.fechaAsignado,
-        fechaSolicitud: obj.fechaSolicitud,
         parqueoSolicitado: obj.parqueoSolicitado,
         usuarioSolicitud: obj.usuarioSolicitud
     })
@@ -38,13 +60,13 @@ const update = async (obj: SolicitudUpdate) => {
     if (!existe)
         throw "La casa no existe";
 
+
+    await Parqueo.findByIdAndUpdate(existe.parqueoSolicitado, { ocupado: true })
+
     await Solicitud.updateOne({ _id: obj.idSolicitud }, {
         agenteAsignado: obj.agenteAsignado,
-        completada: obj.completada,
-        fechaAsignado: obj.fechaAsignado,
-        fechaSolicitud: obj.fechaSolicitud,
-        parqueoSolicitado: obj.parqueoSolicitado,
-        usuarioSolicitud: obj.usuarioSolicitud
+        completada: true,
+        fechaAsignado: new Date()
     })
 }
 

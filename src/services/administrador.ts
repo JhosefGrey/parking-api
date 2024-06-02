@@ -36,7 +36,7 @@ const create = async (obj: IAdministrador) => {
 }
 
 const update = async (obj: UpdateAdministrador) => {
-    const existe = await Administrador.findOne({ _id: obj.idUsuario });
+    const existe = await Administrador.findOne({ _id: obj.idAdministrador });
 
     if (!existe)
         throw "El administrador no existe";

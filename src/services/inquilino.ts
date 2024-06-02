@@ -31,7 +31,7 @@ const createInquilino = async (obj: IInquilino) => {
 }
 
 const update = async (obj: UpdateInquilino) => {
-    const existe = await Inquilino.findOne({ _id: obj.idUsuario });
+    const existe = await Inquilino.findOne({ _id: obj.idInquilino });
 
     if (!existe)
         throw "El inquilino no existe";

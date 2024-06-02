@@ -9,10 +9,10 @@ export interface SolicitudInterface {
 
 export interface SolicitudUpdate {
     idSolicitud: string,
-    usuarioSolicitud: string,
-    parqueoSolicitado: string,
-    fechaSolicitud: Date,
-    fechaAsignado: Date | null,
     agenteAsignado: string,
-    completada: boolean,
+}
+
+export interface SolicitudCreate {
+    usuarioSolicitud: string,
+    parqueoSolicitado: string  ,
 }

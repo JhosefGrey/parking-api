@@ -10,8 +10,8 @@ router.get("/:id", checkJwt, getByIdSolicitud);
 router.put("/", checkJwt, updateSolicitud)
 router.post("/", checkJwt, createSolicitud)
 router.delete("/:id", checkJwt, deleteSolicitudCtrl)
-router.get("/usuario/:id", checkJwt, getByAgente);
-router.get("/agente/:id", checkJwt, getByUsuario);
+router.get("/usuario/:id", checkJwt, getByUsuario);
+router.get("/agente/:id", checkJwt, getByAgente);
 
 
 export { router };
