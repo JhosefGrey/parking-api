@@ -1,5 +1,7 @@
 import { IAdministrador, UpdateAdministrador } from "../interfaces/administrador.interface";
 import { Administrador } from "../models/administrador.model";
+import { Agente } from "../models/agente.model";
+import { Inquilino } from "../models/inquilino.models";
 
 const getAll = async () => {
     const listado = await Administrador.find();
@@ -13,6 +15,12 @@ const getById = async (id: string) => {
 
 const create = async (obj: IAdministrador) => {
 
+    const entityValidateAdmin = await Administrador.find({ idUsuario: obj.idUsuario })
+    const entityValidateAgente = await Agente.find({ idUsuario: obj.idUsuario })
+    const entityValidateInquilino = await Inquilino.find({ idUsuario: obj.idUsuario })
+
+    if(entityValidateAgente || entityValidateAdmin || entityValidateInquilino) throw "Usuario ya ingresado";
+    
     await Administrador.create({
         apellido: obj.apellido,
         idUsuario: obj.idUsuario,

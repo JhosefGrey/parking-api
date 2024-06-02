@@ -1,4 +1,6 @@
-import { UpdateInquilino } from "../interfaces/inquilino.interface";
+import { IInquilino, UpdateInquilino } from "../interfaces/inquilino.interface";
+import { Administrador } from "../models/administrador.model";
+import { Agente } from "../models/agente.model";
 import { Inquilino } from "../models/inquilino.models";
 
 
@@ -10,6 +12,22 @@ const getAll = async () => {
 const getById = async (id: string) => {
     const obj = await Inquilino.findById(id);
     return obj;
+}
+
+const createInquilino = async (obj: IInquilino) => {
+   
+    const entityValidateAdmin = await Administrador.find({ idUsuario: obj.idUsuario })
+    const entityValidateAgente = await Agente.find({ idUsuario: obj.idUsuario })
+    const entityValidateInquilino = await Inquilino.find({ idUsuario: obj.idUsuario })
+
+    if(entityValidateAgente || entityValidateAdmin || entityValidateInquilino) throw "Usuario ya ingresado";
+
+    await Inquilino.create({
+        apellido: obj.apellido,
+        idUsuario: obj.idUsuario,
+        nombre: obj.nombre,
+        idCasa: obj.idCasa
+    })
 }
 
 const update = async (obj: UpdateInquilino) => {
@@ -31,4 +49,4 @@ const deleteInquilino = async (id: string) => {
     await Inquilino.deleteOne({ _id: id })
 }
 
-export { getAll, getById, update, deleteInquilino }
+export { getAll, getById, update, deleteInquilino, createInquilino }
