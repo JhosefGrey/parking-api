@@ -37,10 +37,15 @@ const getAllPendientes = async () => {
 };
 
 const getAllByAgente = async (idAgente: string) => {
-    // const listado = await Solicitud.find({ agenteAsignado: idAgente });
-
     const listado = await Solicitud.aggregate([
-        { $match: { "agenteAsignado": idAgente } },
+        {
+            $lookup: {
+                from: "agentes",
+                localField: 'agenteAsignado',
+                foreignField: "_id",
+                as: "agente",
+            }
+        },
         {
             $lookup: {
                 from: "inquilinos",
