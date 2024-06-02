@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import { router } from './routes';
 import db from './config/mongo';
-import { Socket } from 'socket.io';
+import SocketIO, { Socket } from 'socket.io';
 const http = require('http');
 const socketIo = require('socket.io');
 
@@ -41,6 +41,6 @@ app.get('/', (req, res) => {
   });
 
 app.listen(PORT, () => console.log(`Servidor en el puerto ${PORT}`))
-server.listen(3500, () => {
-  console.log('listening on *:3500');
-});
+// server.listen(3500, () => {
+//   console.log('listening on *:3500');
+// });

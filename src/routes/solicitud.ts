@@ -1,11 +1,12 @@
 
 import { Router } from "express";
-import { getAllSolicitudes, getByIdSolicitud, updateSolicitud, deleteSolicitudCtrl, createSolicitud, getByAgente, getByUsuario } from "../controllers/solicitud.controller";
+import { getAllSolicitudes, getByIdSolicitud, updateSolicitud, deleteSolicitudCtrl, createSolicitud, getByAgente, getByUsuario, getAllSolicitudesPendientes } from "../controllers/solicitud.controller";
 import { checkJwt } from "../middlewares/session";
 
 const router = Router();
 
 router.get("/", checkJwt, getAllSolicitudes);
+router.get("/pendientes", checkJwt, getAllSolicitudesPendientes);
 router.get("/:id", checkJwt, getByIdSolicitud);
 router.put("/", checkJwt, updateSolicitud)
 router.post("/", checkJwt, createSolicitud)

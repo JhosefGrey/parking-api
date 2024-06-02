@@ -7,10 +7,40 @@ const getAll = async () => {
     return listado;
 };
 
+const getAllPendientes = async () => {
+    const listado = await Solicitud.aggregate([
+        { $match: { "completada": false } },
+        {
+            $lookup: {
+                from: "inquilinos",
+                localField: 'usuarioSolicitud',
+                foreignField: "_id",
+                as: "inquilino",
+            }
+        },
+        {
+            $unwind: "$inquilino"
+        },
+        {
+            $lookup: {
+                from: "parqueos",
+                localField: 'parqueoSolicitado',
+                foreignField: "_id",
+                as: "parqueo",
+            }
+        },
+        {
+            $unwind: "$parqueo"
+        },
+    ])
+    return listado;
+};
+
 const getAllByAgente = async (idAgente: string) => {
     // const listado = await Solicitud.find({ agenteAsignado: idAgente });
 
     const listado = await Solicitud.aggregate([
+        { $match: { "agenteAsignado": idAgente } },
         {
             $lookup: {
                 from: "inquilinos",
@@ -79,4 +109,4 @@ const deleteSolicitud = async (id: string) => {
     await Solicitud.deleteOne({ _id: id })
 }
 
-export { getAll, getById, update, deleteSolicitud, create, getAllByAgente, getAllByUsuario }
+export { getAll, getById, update, deleteSolicitud, create, getAllByAgente, getAllByUsuario, getAllPendientes }

@@ -1,11 +1,25 @@
 import { Request, Response } from "express"
 import { handleHttp } from "../utils/error.handle";
-import { create, deleteSolicitud, getAll, getAllByAgente, getAllByUsuario, getById, update } from '../services/solicitud'
+import { create, deleteSolicitud, getAll, getAllByAgente, getAllByUsuario, getAllPendientes, getById, update } from '../services/solicitud'
 
 const getAllSolicitudes = async (req: Request, res: Response) => {
     try {
 
         const listado = await getAll();
+
+        res.status(200);
+        res.send(listado)
+
+
+    } catch (error) {
+        handleHttp(res, `${error}`);
+    }
+}
+
+const getAllSolicitudesPendientes = async (req: Request, res: Response) => {
+    try {
+
+        const listado = await getAllPendientes();
 
         res.status(200);
         res.send(listado)
@@ -119,4 +133,4 @@ const deleteSolicitudCtrl = async (req: Request, res: Response) => {
     }
 }
 
-export { getAllSolicitudes, getByIdSolicitud, updateSolicitud, deleteSolicitudCtrl, createSolicitud, getByAgente, getByUsuario }
+export { getAllSolicitudes, getByIdSolicitud, updateSolicitud, deleteSolicitudCtrl, createSolicitud, getByAgente, getByUsuario, getAllSolicitudesPendientes }
